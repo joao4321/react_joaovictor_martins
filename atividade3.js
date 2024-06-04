@@ -1,36 +1,50 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+<!DOCTYPE html>
+<html lang="en">
 
-function Letreiro() {
-    const [texto, setTexto] = React.useState("");
-    const [contador, setContador] = React.useState(0);
-    const mensagem = "Venha estudar na FATEC!";
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Letreiro</title>
+</head>
 
-    React.useEffect(() => {
-      const intervalo = setInterval(() => {
-        if (contador < mensagem.length) {
-          setTexto((prevTexto) => prevTexto + mensagem[contador]);
-          setContador((prevContador) => prevContador + 1);
-        } else {
-          clearInterval(intervalo);
-          setTimeout(() => {
-            setTexto("");
-            setContador(0);
-          }, 2000);
+<body>
+    <div id="root"></div>
+
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    
+    <script>
+        const { useState, useEffect } = React;
+
+        function Letreiro() {
+            const [texto, setTexto] = useState("");
+            const [contador, setContador] = useState(0);
+            const mensagem = "Venha estudar na FATEC!";
+
+            useEffect(() => {
+                const intervalo = setInterval(() => {
+                    if (contador < mensagem.length) {
+                        setTexto((prevTexto) => prevTexto + mensagem[contador]);
+                        setContador((prevContador) => prevContador + 1);
+                    } else {
+                        clearInterval(intervalo);
+                        setTimeout(() => {
+                            setTexto("");
+                            setContador(0);
+                        }, 2000);
+                    }
+                }, 200);
+                return () => clearInterval(intervalo);
+            }, [contador, mensagem]);
+
+            return React.createElement('h1', null, texto);
         }
-      }, 200);
-      return () => clearInterval(intervalo);
-    }, [contador, mensagem]);
 
-    return <h1>{texto}</h1>;
-}
+        const App = () => React.createElement(Letreiro);
 
-function App() {
-    return (
-        <div>
-            <Letreiro />
-        </div>
-    );
-}
+        ReactDOM.render(React.createElement(App), document.getElementById('root'));
+    </script>
+</body>
 
-ReactDOM.render(<App />, document.getElementById('root'));
+</html>
